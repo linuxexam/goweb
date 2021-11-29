@@ -13,7 +13,10 @@ func CheckCert(url string) (string, error) {
 	if !strings.Contains(url, ":") {
 		url += ":443"
 	}
-	conn, err := tls.Dial("tcp", url, nil)
+	config := &tls.Config{
+		InsecureSkipVerify: true,
+	}
+	conn, err := tls.Dial("tcp", url, config)
 	if err != nil {
 		return err.Error() + "\n", err
 	}
