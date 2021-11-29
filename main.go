@@ -60,7 +60,7 @@ func certHandler(w http.ResponseWriter, r *http.Request) {
 	for _, url := range urls {
 		go func(url string) {
 			r, _ := cert.CheckCert(url)
-			r = "----------" + url + "----------\n" + r
+			r = "==========" + url + "==========\n" + r
 			chOut <- r
 		}(url)
 	}
