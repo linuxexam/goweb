@@ -1,8 +1,9 @@
-FROM busybox
+FROM golang:1.17
 
-WORKDIR /app
-COPY goweb ./
-COPY www ./www
+WORKDIR /go/src/app
+COPY . .
+RUN go get -d -v ./...
+RUN go install -v ./...
 
 EXPOSE 8080
-CMD ["/app/goweb"]
+CMD ["goweb"]
