@@ -7,7 +7,9 @@
         <h1>Tool Box</h1>
         <div>
             <ul>
-                <li><a href="cert/">X509 Certificate Checker</a></li>
+                {{ range $name, $app := . }}
+                <li><a href="{{ $app.UrlPattern }}">{{ $app.Name }}</a></li>
+                {{end}}
             </ul>
         </div>
     </body>
