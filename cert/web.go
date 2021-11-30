@@ -1,5 +1,8 @@
 package cert
 
+///////////////////////////////////////////////////////////////////////////////////////
+// This file provides the web app and registers itself via init().
+
 import (
 	"html/template"
 	"net/http"
