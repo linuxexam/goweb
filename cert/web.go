@@ -4,6 +4,7 @@ package cert
 // This file provides the web app and registers itself via init().
 
 import (
+	"embed"
 	"html/template"
 	"net/http"
 	"strings"
@@ -11,9 +12,12 @@ import (
 	"github.com/linuxexam/goweb/router"
 )
 
+//embed resource files
+//go:embed *.html
+var webUI embed.FS
+
 var (
-	tpls = template.Must(template.ParseFiles(
-		"cert/cert.html"))
+	tpls = template.Must(template.ParseFS(webUI, "*.html"))
 )
 
 type PageCert struct {

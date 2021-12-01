@@ -1,14 +1,17 @@
 package router
 
 import (
+	"embed"
 	"html/template"
 	"net/http"
 	"sync"
 )
 
+//go:embed router.html
+var webUI embed.FS
+
 var (
-	tpls = template.Must(template.ParseFiles(
-		"router/router.html"))
+	tpls = template.Must(template.ParseFS(webUI, "*.html"))
 )
 var (
 	appsMu sync.RWMutex
