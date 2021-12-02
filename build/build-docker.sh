@@ -1,2 +1,5 @@
 #!/bin/env bash
-docker build -t goweb -f ./Dockerfile ../
+# run this script under repo root
+
+self_path=$(cd `dirname $0`; pwd)
+docker build -t goweb -f $self_path/Dockerfile .
