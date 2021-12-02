@@ -2,18 +2,22 @@
 <html>
     <head>
         <title>{{ .Title }}</title>
+        <link rel="stylesheet" href="/static/router.css">
     </head>
     <body>
-        <h1>{{ .Title }}</h1>
-        <form action="" method="POST">
-            <div>
-                URLs to check:(separated by LF or Spaces)<br/>
-                <textarea name="urlToCheck" rows="10" cols="40">{{.UrlsToCheck}}</textarea> 
-            </div>
-            <div>
-                <input type="submit" value="OK" />
-            </div>
-        </form>
-        <pre>{{ .Result }}</pre>
+        <div id="container">
+            <img src="static/cert.png" width="100" height="100" />
+            <h1>{{ .Title }}</h1>
+            <form action="" method="POST">
+                <div>
+                    URLs to check:(separated by LF or Spaces)<br/>
+                    <textarea name="urlToCheck" rows="10" cols="40">{{.UrlsToCheck}}</textarea> 
+                </div>
+                <div>
+                    <input type="submit" value="OK" />
+                </div>
+            </form>
+            <pre>{{ .Result }}</pre>
+        </div>
     </body>
 </html>

@@ -13,11 +13,12 @@ import (
 )
 
 //embed resource files
-//go:embed *.html
+//go:embed *.html *.png
 var webUI embed.FS
 
 var (
-	tpls = template.Must(template.ParseFS(webUI, "*.html"))
+	appName = "CertChecker"
+	tpls    = template.Must(template.ParseFS(webUI, "*.html"))
 )
 
 type PageCert struct {
@@ -27,6 +28,15 @@ type PageCert struct {
 }
 
 func certHandler(w http.ResponseWriter, r *http.Request) {
+	path := r.URL.Path
+	if strings.HasPrefix(path, "/"+appName+"/static/") {
+		fs := http.StripPrefix("/"+appName+"/static/", http.FileServer(http.FS(webUI)))
+		fs.ServeHTTP(w, r)
+		return
+	}
+	_certHandler(w, r)
+}
+func _certHandler(w http.ResponseWriter, r *http.Request) {
 	pd := &PageCert{
 		Title:       "Cert Checker",
 		UrlsToCheck: "www.bcit.ca",
@@ -61,5 +71,5 @@ func certHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func init() {
-	router.RegisterApp("CertChecker", http.HandlerFunc(certHandler))
+	router.RegisterApp(appName, http.HandlerFunc(certHandler))
 }
