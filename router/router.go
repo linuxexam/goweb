@@ -7,7 +7,7 @@ import (
 	"sync"
 )
 
-//go:embed router.html
+//go:embed *.html *.png *.css
 var webUI embed.FS
 
 var (
@@ -43,6 +43,8 @@ func rootHandler(w http.ResponseWriter, r *http.Request) {
 
 func Run(addr string) error {
 	http.HandleFunc("/", rootHandler)
+	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.FS(webUI))))
+
 	for _, app := range apps {
 		http.Handle(app.UrlPattern, app.HttpHandler)
 	}

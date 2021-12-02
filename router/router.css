@@ -1,0 +1,24 @@
+body {
+    background: darkgrey;
+}
+h1 {
+    font-size: 30px;
+    font-style: normal;
+    color: lightgrey;
+    margin: 0;
+    padding: 0;
+}
+
+#container {
+    width: 800px;
+    padding: 0 100px 100px 100px;
+    margin: 0 auto;
+    background: white;
+}
+
+ul li{
+    list-style-type: circle;
+}
+a:link {
+    text-decoration: none;
+}

@@ -2,15 +2,19 @@
 <html>
     <head>
         <title>ToolBox</title>
+        <link rel="stylesheet" href="/static/router.css">
     </head>
     <body>
-        <h1>Tool Box</h1>
-        <div>
-            <ul>
-                {{ range $name, $app := . }}
-                <li><a href="{{ $app.UrlPattern }}">{{ $app.Name }}</a></li>
-                {{end}}
-            </ul>
+        <div id="container">
+            <img src="/static/toolbox.png" width="300" height="200" />
+            <h1>Tool Box</h1>
+            <div>
+                <ul>
+                    {{ range $name, $app := . }}
+                    <li><a href="{{ $app.UrlPattern }}">{{ $app.Name }}</a></li>
+                    {{end}}
+                </ul>
+            </div>
         </div>
     </body>
 </html>
