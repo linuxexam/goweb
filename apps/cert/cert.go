@@ -6,7 +6,6 @@ import (
 	"crypto/x509"
 	"fmt"
 	"strings"
-	"testing"
 	"time"
 )
 
@@ -39,24 +38,4 @@ func sprintX509(cert *x509.Certificate) string {
 
 func sprintTime(t time.Time) string {
 	return fmt.Sprintf("%d-%02d-%02d", t.Year(), t.Month(), t.Day())
-}
-
-func TestCheckCert(t *testing.T) {
-	chOut := make(chan string)
-	urls := []string{
-		"mail.google.com",
-		"www.bcit.ca",
-		"notexist.cm",
-	}
-	for _, url := range urls {
-		go func(url string) {
-			var r string
-			defer func() { chOut <- (url + ":\n" + r) }()
-			r, _ = CheckCert(url)
-		}(url)
-	}
-
-	for range urls {
-		fmt.Print(<-chOut)
-	}
 }
