@@ -1,5 +1,8 @@
 pipeline {
 	agent {label 'dockerce'}
+    environment {
+        DOCKER_LOGIN = credentials('JFROG_JZHAO113')
+    }
 	stages {
 		stage('build image') {
 			steps {
@@ -8,7 +11,10 @@ pipeline {
 		}
         stage('upload image'){
             steps {
-                sh 'docker push goweb:latest'
+                sh 'docker login -u ${DOCKER_LOGIN_USR} -p ${DOCKER_LOGIN_PSW} bcit.io'
+                sh 'docker tag goweb:latest bcit.io/goweb:latest' 
+                sh 'docker push bcit.io/goweb:latest'
+                sh 'docker logout'
             }
         }
 	}
