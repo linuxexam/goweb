@@ -3,7 +3,7 @@ pipeline {
 	stages {
 		stage('build image') {
 			steps {
-				sh 'build/buid-docker.sh'
+				sh 'build/build-docker.sh'
 			}
 		}
         stage('upload image'){
