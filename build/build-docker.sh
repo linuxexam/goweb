@@ -2,4 +2,4 @@
 # run this script under repo root
 
 self_path=$(cd `dirname $0`; pwd)
-docker build -t goweb -f $self_path/Dockerfile .
+docker build -t goweb:latest -f $self_path/Dockerfile .
