@@ -1,0 +1,15 @@
+pipeline {
+	agent {label 'dockerce'}
+	stages {
+		stage('build image') {
+			steps {
+				sh 'build/buid-docker.sh'
+			}
+		}
+        stage('upload image'){
+            steps {
+                sh 'docker push goweb:latest'
+            }
+        }
+	}
+}
