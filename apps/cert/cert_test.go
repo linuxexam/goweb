@@ -16,7 +16,11 @@ func TestCheckCert(t *testing.T) {
 		go func(url string) {
 			var r string
 			defer func() { chOut <- (url + ":\n" + r) }()
-			r, _ = CheckCert(url)
+			r, err := PrintCert(url, "json")
+			if err != nil {
+				fmt.Println(err)
+			}
+
 		}(url)
 	}
 

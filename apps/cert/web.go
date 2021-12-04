@@ -22,9 +22,10 @@ var (
 )
 
 type PageCert struct {
-	Title       string
-	UrlsToCheck string
-	Result      string
+	Title        string
+	UrlsToCheck  string
+	OutputFormat string
+	Result       string
 }
 
 func certHandler(w http.ResponseWriter, r *http.Request) {
@@ -38,9 +39,10 @@ func certHandler(w http.ResponseWriter, r *http.Request) {
 }
 func _certHandler(w http.ResponseWriter, r *http.Request) {
 	pd := &PageCert{
-		Title:       "Cert Checker",
-		UrlsToCheck: "www.bcit.ca",
-		Result:      "",
+		Title:        "Cert Checker",
+		UrlsToCheck:  "www.bcit.ca",
+		OutputFormat: "text",
+		Result:       "",
 	}
 	urlToCheck := r.FormValue("urlToCheck")
 
@@ -52,12 +54,12 @@ func _certHandler(w http.ResponseWriter, r *http.Request) {
 
 	// post
 	urls := strings.Fields(urlToCheck)
+	outputFormat := strings.ToLower(strings.TrimSpace(r.FormValue("outputFormat")))
 	sb := new(strings.Builder)
 	chOut := make(chan string)
 	for _, url := range urls {
 		go func(url string) {
-			r, _ := CheckCert(url)
-			r = "==========" + url + "==========\n" + r
+			r, _ := PrintCert(url, outputFormat)
 			chOut <- r
 		}(url)
 	}
@@ -66,6 +68,7 @@ func _certHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	pd.UrlsToCheck = urlToCheck
+	pd.OutputFormat = outputFormat
 	pd.Result = sb.String()
 	tpls.ExecuteTemplate(w, "cert.html", pd)
 }

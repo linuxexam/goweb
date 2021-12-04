@@ -10,11 +10,17 @@
             <h1>{{ .Title }}</h1>
             <form action="" method="POST">
                 <div>
-                    URLs to check:(separated by LF or Spaces)<br/>
+                    <p>URLs to check:(separated by LF or Spaces)</p>
                     <textarea name="urlToCheck" rows="10" cols="40">{{.UrlsToCheck}}</textarea> 
-                </div>
-                <div>
-                    <input type="submit" value="OK" />
+                    <p>Please select the output format:</p>
+                    <input type="radio" id="text" name="outputFormat" value="text" {{ if (eq .OutputFormat `text`) }}checked{{end}} />
+                    <label for="json">TEXT</label>
+                    <input type="radio" id="json" name="outputFormat" value="json" {{ if (eq .OutputFormat `json`) }}checked{{end}}  />
+                    <label for="json">JSON</label>
+                    <input type="radio" id="yaml" name="outputFormat" value="yaml" {{ if (eq .OutputFormat `yaml`) }}checked{{end}}  />
+                    <label for="yaml">YAML</label> 
+
+                    <p><input type="submit" value="OK" /></p>
                 </div>
             </form>
             <pre>{{ .Result }}</pre>
