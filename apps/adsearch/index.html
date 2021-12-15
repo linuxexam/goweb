@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ .Title }}</title>
+        <link rel="stylesheet" href="/static/router.css">
+    </head>
+    <body>
+        <div id="container">
+            <img src="static/adsearch.png" width="100" height="100" />
+            <h1>{{ .Title }}</h1>
+            <form action="" method="POST">
+                <div>
+                    <p>User Name (GivenName Surname)</p>
+                    <p><input type="text" name="username" value="{{ .UserName }}" /></p>
+                    <p><input type="submit" value="OK" /></p>
+                </div>
+            </form>
+            <pre>{{ .Result }}</pre>
+        </div>
+    </body>
+</html>

@@ -7,7 +7,7 @@ import (
 )
 
 func TestADSearch(t *testing.T) {
-	s, err := NewSessionFromJson("bcit-session.json")
+	s, err := NewSessionFromJson("../../config/adsearch/bcit-session.json")
 	if err != nil {
 		log.Fatal(err)
 	}
