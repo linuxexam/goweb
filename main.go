@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	_ "github.com/linuxexam/goweb/apps/adsearch"
 	_ "github.com/linuxexam/goweb/apps/app1"
 	_ "github.com/linuxexam/goweb/apps/cert"
 	"github.com/linuxexam/goweb/router"
