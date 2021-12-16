@@ -2,6 +2,7 @@ package adsearch
 
 import (
 	"embed"
+	"fmt"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -38,6 +39,39 @@ func appHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	_appHandler(w, r)
+}
+
+func getDNInfo(s *Session, DN string) string {
+	var sb strings.Builder
+	// basic info
+	email, err := s.FindEmail(DN)
+	sb.WriteString("Email:\n")
+
+	if err != nil {
+		sb.WriteString(err.Error() + "\n")
+	}
+	sb.WriteString(email + "\n")
+
+	sb.WriteString("\n")
+	// managers info
+	mgrs := s.FindManagers(DN)
+
+	sb.WriteString("Managers:\n")
+	for _, mgr := range mgrs {
+		sb.WriteString(mgr + "\n")
+	}
+
+	// groups info
+	sb.WriteString("\n")
+	sb.WriteString("Groups:\n")
+	grps, err := s.FindGroups(DN)
+	if err != nil {
+		sb.WriteString("No groups")
+	}
+	for _, grp := range grps {
+		sb.WriteString(grp + "\n")
+	}
+	return sb.String()
 }
 
 // config file priority order: current work dir, exe's dir
@@ -94,25 +128,12 @@ func _appHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	DN := DNs[0]
-	mgrs := s.FindManagers(DN)
+	n := len(DNs)
+	pd.Result += fmt.Sprintf("Found %d records\n", n)
 
-	var sb strings.Builder
-	sb.WriteString("Managers:\n")
-	for _, mgr := range mgrs {
-		sb.WriteString(mgr + "\n")
+	for i, DN := range DNs {
+		pd.Result += fmt.Sprintf("---------------------------------------Record: %d/%d---------------------------------------\n", i+1, n)
+		pd.Result += getDNInfo(s, DN)
 	}
-	sb.WriteString("\n")
-	sb.WriteString("Groups:\n")
-	grps, err := s.FindGroups(DN)
-	if err != nil {
-		sb.WriteString("No groups")
-	}
-	for _, grp := range grps {
-		sb.WriteString(grp + "\n")
-	}
-
-	pd.Result = sb.String()
 	tpls.ExecuteTemplate(w, "index.html", pd)
-
 }
