@@ -44,27 +44,36 @@ func appHandler(w http.ResponseWriter, r *http.Request) {
 func getDNInfo(s *Session, DN string) string {
 	var sb strings.Builder
 	// basic info
+	sb.WriteString("Basic Info:\n")
 	email, err := s.FindEmail(DN)
-	sb.WriteString("Email:\n")
+	sb.WriteString("Email: ")
 
 	if err != nil {
 		sb.WriteString(err.Error() + "\n")
+	} else {
+		sb.WriteString(email + "\n")
 	}
-	sb.WriteString(email + "\n")
+
+	sam, err := s.FindSAM(DN)
+	sb.WriteString("sAMAccountName: ")
+	if err != nil {
+		sb.WriteString(err.Error() + "\n")
+	} else {
+		sb.WriteString(sam + "\n")
+	}
 
 	sb.WriteString("\n")
 	// managers info
 	mgrs := s.FindManagers(DN)
-
-	sb.WriteString("Managers:\n")
+	sb.WriteString(fmt.Sprintf("Managers (%d):\n", len(mgrs)))
 	for _, mgr := range mgrs {
 		sb.WriteString(mgr + "\n")
 	}
 
 	// groups info
 	sb.WriteString("\n")
-	sb.WriteString("Groups:\n")
 	grps, err := s.FindGroups(DN)
+	sb.WriteString(fmt.Sprintf("Groups (%d):\n", len(grps)))
 	if err != nil {
 		sb.WriteString("No groups")
 	}

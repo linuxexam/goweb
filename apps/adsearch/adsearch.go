@@ -64,7 +64,28 @@ func (s *Session) FindEmail(DN string) (string, error) {
 	}
 	return entry.Attributes[0].Values[0], nil
 }
+func (s *Session) FindSAM(DN string) (string, error) {
+	CN := strings.Split(strings.SplitN(DN, ",", 2)[0], "=")[1]
+	filter := fmt.Sprintf("(CN=%s)", ldap.EscapeFilter(CN))
+	attrs := []string{"sAMAccountName"}
+	searchReq := ldap.NewSearchRequest(s.BaseDN, ldap.ScopeWholeSubtree, 0, 0, 0, false,
+		filter, attrs, []ldap.Control{})
 
+	r, err := s.conn.Search(searchReq)
+	if err != nil {
+		return "", err
+	}
+
+	if len(r.Entries) == 0 {
+		return "", errors.New("not found")
+	}
+
+	entry := r.Entries[0]
+	if len(entry.Attributes) == 0 {
+		return "", errors.New("no info")
+	}
+	return entry.Attributes[0].Values[0], nil
+}
 func (s *Session) FindManager(DN string) (string, error) {
 	CN := strings.Split(strings.SplitN(DN, ",", 2)[0], "=")[1]
 	filter := fmt.Sprintf("(CN=%s)", ldap.EscapeFilter(CN))
