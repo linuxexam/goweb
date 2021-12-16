@@ -10,4 +10,4 @@ WORKDIR /app
 COPY --from=0 /go/src/app/goweb ./
 
 EXPOSE 8080
-CMD ["cd /app/; ./goweb"]
+CMD ["/app/goweb"]

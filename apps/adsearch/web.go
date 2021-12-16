@@ -3,6 +3,8 @@ package adsearch
 import (
 	"embed"
 	"net/http"
+	"os"
+	"path/filepath"
 	"strings"
 	"text/template"
 
@@ -37,6 +39,21 @@ func appHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	_appHandler(w, r)
 }
+
+// config file priority order: current work dir, exe's dir
+func getConfigFile(filename string) string {
+
+	configFile := filepath.Join("config", "adsearch", filename)
+
+	_, err := os.Stat(configFile)
+	if err != nil {
+		selfPath, _ := os.Executable()
+		selfDir := filepath.Dir(selfPath)
+		configFile = filepath.Join(selfDir, "config", "adsearch", filename)
+	}
+
+	return configFile
+}
 func _appHandler(w http.ResponseWriter, r *http.Request) {
 	pd := &PageIndex{
 		Title:    appName,
@@ -62,7 +79,7 @@ func _appHandler(w http.ResponseWriter, r *http.Request) {
 	givenName := names[0]
 	surname := names[1]
 
-	s, err := NewSessionFromJson("./config/adsearch/bcit-session.json")
+	s, err := NewSessionFromJson(getConfigFile("bcit-session.json"))
 	if err != nil {
 		pd.Result = err.Error()
 		tpls.ExecuteTemplate(w, "index.html", pd)
